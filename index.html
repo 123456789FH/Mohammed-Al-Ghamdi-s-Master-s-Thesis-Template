@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#3b0917" />
   <meta name="description" content="نموذج الماستر كوتش: محمد الغامدي للكوتشنج الطلابي" />
+  <meta name="application-name" content="الماستر كوتش" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="الماستر كوتش" />
   <title>نموذج الماستر كوتش: محمد الغامدي</title>
   <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="icon" href="icons/icon-192.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -18,7 +24,10 @@
         <h1>نموذج الماستر كوتش: محمد الغامدي</h1>
         <div class="subtitle">للكوتشنج الطلابي</div>
       </div>
-      <button class="icon-btn" id="resetBtn" title="إعادة ضبط التقدم">↻</button>
+      <div class="top-actions">
+        <button class="icon-btn install-mini" id="installBtn" title="تثبيت التطبيق" aria-label="تثبيت التطبيق">⇩</button>
+        <button class="icon-btn reset-mini" id="resetBtn" title="إعادة ضبط التقدم" aria-label="إعادة ضبط التقدم">↻</button>
+      </div>
     </header>
 
     <main id="view" class="view" aria-live="polite"></main>
@@ -59,6 +68,16 @@
         <div class="quote-mark">“</div>
         <p>كل خطوة صغيرة اليوم تصنع فرقًا كبيرًا في مستقبلك غدًا.</p>
       </article>
+    </section>
+
+    <section class="install-card glass" id="installCard">
+      <div class="install-card-icon">⬇</div>
+      <div class="install-card-copy">
+        <span class="eyebrow">استخدمه كتطبيق مستقل</span>
+        <h3>ثبّت نموذج الماستر كوتش على جهازك</h3>
+        <p>وصول أسرع من الشاشة الرئيسية، وتجربة مستقلة، مع استمرار عمل الأجزاء الأساسية دون اتصال بعد فتحها أول مرة.</p>
+      </div>
+      <button class="primary-btn" id="homeInstallBtn">تثبيت التطبيق</button>
     </section>
 
     <section class="section-block">
@@ -161,6 +180,35 @@
     </section>
   </template>
 
+  <template id="resourcesTemplate">
+    <section class="section-block resources-page">
+      <div class="section-head resources-head">
+        <div>
+          <span class="eyebrow">أدلة • قوالب • ملفات • روابط</span>
+          <h2>مكتبة الموارد</h2>
+          <p class="muted resource-note">الملفات التي تضيفها من داخل التطبيق تُحفظ على هذا الجهاز فقط. أما الموارد الموجودة داخل المستودع فتظهر لجميع المستخدمين.</p>
+        </div>
+        <button class="primary-btn" id="addResourceBtn">＋ إضافة مورد</button>
+      </div>
+
+      <section class="glass resource-toolbar">
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="resourceSearch" type="search" placeholder="ابحث باسم المورد أو وصفه..." />
+        </label>
+        <div class="resource-filters" id="resourceFilters"></div>
+      </section>
+
+      <div id="resourceStats" class="resource-stats"></div>
+      <div id="resourceGrid" class="resource-grid"></div>
+      <div id="resourceEmpty" class="glass resource-empty" hidden>
+        <div>📚</div>
+        <h3>لا توجد موارد مطابقة</h3>
+        <p>غيّر البحث أو أضف موردًا جديدًا.</p>
+      </div>
+    </section>
+  </template>
+
   <template id="simpleTemplate">
     <section class="section-block">
       <article class="glass empty-card">
@@ -170,6 +218,42 @@
       </article>
     </section>
   </template>
+
+  <dialog id="resourceDialog" class="app-dialog">
+    <form method="dialog" class="dialog-card glass" id="resourceForm">
+      <div class="dialog-head">
+        <div><span class="eyebrow">مورد جديد</span><h3>إضافة مورد إلى المكتبة</h3></div>
+        <button type="button" class="dialog-close" data-close-dialog="resourceDialog" aria-label="إغلاق">×</button>
+      </div>
+      <div class="resource-mode" role="tablist" aria-label="نوع المورد">
+        <button type="button" class="mode-btn active" data-resource-mode="file">📎 ملف</button>
+        <button type="button" class="mode-btn" data-resource-mode="link">🔗 رابط</button>
+      </div>
+      <input type="hidden" id="resourceMode" value="file" />
+      <label class="field-block"><span>عنوان المورد</span><input id="resourceTitle" required maxlength="120" placeholder="مثال: نموذج صياغة الهدف الذكي" /></label>
+      <label class="field-block"><span>المرحلة / التصنيف</span>
+        <select id="resourceCategory">
+          <option value="عام">عام</option><option value="أطمح">أطمح</option><option value="أهتم">أهتم</option><option value="أربط">أربط</option><option value="أخطط">أخطط</option><option value="أنفذ">أنفذ</option>
+        </select>
+      </label>
+      <label class="field-block"><span>وصف مختصر</span><textarea id="resourceDescription" rows="2" placeholder="ما فائدة هذا المورد؟"></textarea></label>
+      <label class="field-block resource-file-field" id="resourceFileField"><span>اختر الملف</span><input id="resourceFile" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.rtf,.csv,.png,.jpg,.jpeg,.webp,.gif,.mp4,.mov,.m4v,.zip" /></label>
+      <label class="field-block resource-link-field" id="resourceLinkField" hidden><span>رابط المورد</span><input id="resourceUrl" type="url" inputmode="url" placeholder="https://example.com/resource" /></label>
+      <div class="dialog-hint">🔒 الملفات المرفوعة هنا تبقى داخل متصفح هذا الجهاز ولا تُرفع تلقائيًا إلى GitHub.</div>
+      <div class="dialog-actions"><button type="button" class="secondary-btn" data-close-dialog="resourceDialog">إلغاء</button><button type="submit" class="primary-btn">حفظ المورد</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="installDialog" class="app-dialog">
+    <section class="dialog-card glass">
+      <div class="dialog-head">
+        <div><span class="eyebrow">تثبيت التطبيق</span><h3>أضف التطبيق إلى جهازك</h3></div>
+        <button type="button" class="dialog-close" data-close-dialog="installDialog" aria-label="إغلاق">×</button>
+      </div>
+      <div id="installInstructions" class="install-instructions"></div>
+      <div class="dialog-actions"><button type="button" class="primary-btn" data-close-dialog="installDialog">حسنًا</button></div>
+    </section>
+  </dialog>
 
   <script src="app.js"></script>
 </body>
