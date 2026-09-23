@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#3b0917" />
+  <meta name="description" content="نموذج الماستر كوتش: محمد الغامدي للكوتشنج الطلابي" />
+  <title>نموذج الماستر كوتش: محمد الغامدي</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar glass">
+      <button class="icon-btn" id="menuBtn" aria-label="القائمة">☰</button>
+      <div class="brand">
+        <div class="crown">♛</div>
+        <h1>نموذج الماستر كوتش: محمد الغامدي</h1>
+        <div class="subtitle">للكوتشنج الطلابي</div>
+      </div>
+      <button class="icon-btn" id="resetBtn" title="إعادة ضبط التقدم">↻</button>
+    </header>
+
+    <main id="view" class="view" aria-live="polite"></main>
+
+    <nav class="bottom-nav glass" aria-label="التنقل الرئيسي">
+      <button data-route="home" class="nav-item active"><span>⌂</span><small>الرئيسية</small></button>
+      <button data-route="stages" class="nav-item"><span>◉</span><small>المراحل</small></button>
+      <button data-route="progress" class="nav-item"><span>▥</span><small>متابعة تقدمي</small></button>
+      <button data-route="resources" class="nav-item"><span>▤</span><small>مكتبة الموارد</small></button>
+      <button data-route="profile" class="nav-item"><span>●</span><small>ملفي</small></button>
+    </nav>
+  </div>
+
+  <template id="homeTemplate">
+    <section class="hero glass">
+      <div class="hero-copy">
+        <span class="eyebrow">من الطموح إلى الفعل</span>
+        <h2>رحلتك تبدأ من هنا</h2>
+        <p>بخمس خطوات عملية تساعدك على صناعة مستقبل أكثر وضوحًا.</p>
+        <div class="hero-actions">
+          <button class="primary-btn" data-action="start">ابدأ الرحلة ▶</button>
+          <button class="secondary-btn" data-route-jump="stages">استكشف النموذج</button>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="road"></div>
+        <div class="sun"></div>
+        <div class="student">🎓</div>
+      </div>
+    </section>
+
+    <section class="summary-grid">
+      <article class="glass metric-card">
+        <div class="metric-title">معدل الإنجاز</div>
+        <div class="ring" id="homeRing"><span id="homePercent">٠٪</span></div>
+      </article>
+      <article class="glass quote-card">
+        <div class="quote-mark">“</div>
+        <p>كل خطوة صغيرة اليوم تصنع فرقًا كبيرًا في مستقبلك غدًا.</p>
+      </article>
+    </section>
+
+    <section class="section-block">
+      <div class="section-head">
+        <h3>المراحل الخمس</h3>
+        <span class="muted">اضغط على أي مرحلة للبدء</span>
+      </div>
+      <div class="stage-cards" id="homeStages"></div>
+    </section>
+
+    <section class="glass about-card">
+      <h3>عن النموذج</h3>
+      <p>نموذج عملي يساعد الطالب على تحديد أهدافه، واكتشاف اهتماماته وشغفه، وربطها بواقعه، ثم وضع خطة واضحة والالتزام بالتنفيذ والمتابعة.</p>
+    </section>
+  </template>
+
+  <template id="stagesTemplate">
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">خمس خطوات تصنع مستقبلك</span>
+          <h2>اختر المرحلة</h2>
+        </div>
+        <div class="mini-progress"><span id="stagesPercent">٠٪</span></div>
+      </div>
+      <div class="stage-list" id="stageList"></div>
+    </section>
+  </template>
+
+  <template id="stageDetailTemplate">
+    <section class="stage-detail">
+      <div class="glass detail-head" id="detailHead">
+        <button class="back-btn" data-route-jump="stages">→ رجوع</button>
+        <div class="detail-title-wrap">
+          <div class="stage-icon big" id="detailIcon"></div>
+          <div>
+            <div class="eyebrow" id="detailStep"></div>
+            <h2 id="detailTitle"></h2>
+            <p id="detailSubtitle"></p>
+          </div>
+        </div>
+        <div class="step-progress" id="detailProgress"></div>
+      </div>
+
+      <form class="glass coaching-form" id="coachingForm">
+        <div id="questionFields"></div>
+
+        <div class="output-panel" id="outputPanel">
+          <span class="tag">المخرج</span>
+          <strong id="outputText"></strong>
+        </div>
+
+        <label class="field-block">
+          <span>ملاحظات إضافية</span>
+          <textarea id="notes" rows="3" placeholder="اكتب أي ملاحظات أو أفكار إضافية..."></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="button" class="secondary-btn" id="prevStage">السابق</button>
+          <button type="submit" class="primary-btn">حفظ</button>
+          <button type="button" class="primary-btn alt" id="nextStage">التالي</button>
+        </div>
+      </form>
+    </section>
+  </template>
+
+  <template id="progressTemplate">
+    <section class="section-block">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">رحلة نحو مستقبل أكثر وضوحًا</span>
+          <h2>متابعة تقدمي</h2>
+        </div>
+      </div>
+
+      <section class="progress-layout">
+        <article class="glass big-progress-card">
+          <div class="big-ring" id="progressRing"><span id="progressPercent">٠٪</span></div>
+          <div>
+            <h3>معدل الإنجاز</h3>
+            <p class="muted" id="progressMessage">ابدأ الآن، ومستقبلك ينتظرك.</p>
+          </div>
+        </article>
+
+        <article class="glass">
+          <div class="section-head compact"><h3>حالة المراحل الخمس</h3></div>
+          <div id="progressStages" class="progress-stages"></div>
+        </article>
+      </section>
+
+      <section class="glass checklist-card">
+        <div class="section-head compact"><h3>خطة هذا الأسبوع</h3><button class="small-btn" id="clearChecklist">إلغاء التحديد</button></div>
+        <div id="weeklyChecklist"></div>
+      </section>
+
+      <section class="glass achievements">
+        <div class="section-head compact"><h3>شاراتي وإنجازاتي</h3></div>
+        <div id="badges" class="badge-grid"></div>
+      </section>
+    </section>
+  </template>
+
+  <template id="simpleTemplate">
+    <section class="section-block">
+      <article class="glass empty-card">
+        <div class="empty-icon" id="simpleIcon"></div>
+        <h2 id="simpleTitle"></h2>
+        <p id="simpleText"></p>
+      </article>
+    </section>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

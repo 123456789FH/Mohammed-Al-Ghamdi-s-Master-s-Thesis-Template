@@ -1,0 +1,10 @@
+{
+  "name":"نموذج الماستر كوتش: محمد الغامدي",
+  "short_name":"الماستر كوتش",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#12070b",
+  "theme_color":"#3b0917",
+  "lang":"ar",
+  "dir":"rtl"
+}
